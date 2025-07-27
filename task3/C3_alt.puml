@@ -1,0 +1,17 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(monolith, "AgroMonolith") {
+    Component(video, "Video Analyzer", "Python", "Обработка видео, выявление событий")
+    Component(event, "Event Manager", "Flask", "Управление событиями и тревогами")
+    Component(notification, "Notification Manager", "Flask", "Формирование и рассылка уведомлений")
+    Component(integration, "ERP Integration", "Python", "Обмен метриками с ERP")
+    Component(storage, "Data Storage", "PostgreSQL", "Хранение всех данных и событий")
+}
+Rel(video, event, "Передаёт события")
+Rel(event, notification, "Передаёт тревоги")
+Rel(event, storage, "Сохраняет события")
+Rel(notification, storage, "Читает данные для уведомлений")
+Rel(integration, storage, "Читает/пишет метрики")
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+
+package "Event Manager" {
+    class EventController {
+        +createEvent()
+        +getEvent()
+    }
+    class EventService {
+        +processEvent()
+        +validateEvent()
+    }
+    class AlertService {
+        +generateAlert()
+        +handleAlert()
+    }
+    class EventRepository {
+        +saveEvent()
+        +findEventById()
+    }
+}
+
+EventController --> EventService : "Передаёт команды"
+EventService --> AlertService : "Формирует тревоги"
+EventService --> EventRepository : "Чтение/запись событий"
+
+@enduml
