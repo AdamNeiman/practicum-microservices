@@ -1,0 +1,15 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(operator, "Оператор фермы", "Мониторинг и управление")
+System(central, "Центральный сервер мониторинга", "Агрегация всех функций")
+System(camera, "IP-камеры/Видеосерверы", "Передают видеопотоки на сервер")
+System(erp, "ERP/Учетная система", "Обмен метриками, учёт поголовья")
+System(mobile, "Мобильное приложение", "Оповещения, просмотр состояния")
+
+Rel(operator, mobile, "Использует")
+Rel(camera, central, "Передает видеопотоки и данные")
+Rel(central, mobile, "Оповещает о событиях")
+Rel(central, erp, "Передает метрики, статусы")
+
+@enduml

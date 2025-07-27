@@ -1,0 +1,29 @@
+@startuml
+
+package "Event Processor" {
+    class EventService {
+        +processEvent(event)
+    }
+    class EventMapper {
+        +map(event)
+    }
+    class AlertGenerator {
+        +generateAlert(event)
+    }
+    class EventRepository {
+        +save(event)
+        +findById(id)
+    }
+    class KafkaHandler {
+        +receive()
+        +send()
+    }
+}
+
+EventService --> EventMapper : "Преобразует данные"
+EventService --> AlertGenerator : "Формирует тревоги"
+EventService --> EventRepository : "Читает/пишет события"
+EventService --> KafkaHandler : "Получает события из Kafka"
+
+@enduml
+

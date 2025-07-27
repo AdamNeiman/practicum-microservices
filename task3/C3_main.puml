@@ -1,0 +1,14 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(event, "Event Service") {
+    Component(api, "REST API", "Express.js", "Внешние запросы: создание, просмотр событий, healthcheck")
+    Component(consumer, "Kafka Consumer", "kafkajs", "Подписка на события от Kafka")
+    Component(processor, "Event Processor", "TypeScript", "Бизнес-логика обработки событий, маршрутизация тревог")
+    Component(db, "EventRepository", "PostgreSQL", "Хранение и выборка событий")
+}
+Rel(api, processor, "Обрабатывает запросы")
+Rel(consumer, processor, "Передаёт события из Kafka")
+Rel(processor, db, "Чтение/запись событий")
+
+@enduml
