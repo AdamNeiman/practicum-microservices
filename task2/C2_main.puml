@@ -1,0 +1,28 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(operator, "Оператор фермы", "Следит за состоянием животных и техники")
+Person(admin, "Администратор", "Настраивает систему и следит за безопасностью")
+
+System_Boundary(central, "Центральный сервер") {
+    Container(video, "Video Analytics Service", "Python, TensorFlow", "Обработка видеопотоков, генерация событий")
+    Container(event, "Event Service", "Node.js", "Реестр событий и инцидентов, API для получения тревог, использует Kafka для получения/отправки событий")
+    Container(notification, "Notification Service", "Go", "Оповещения операторов и интеграция с внешними системами")
+    Container(storage, "Storage Service", "PostgreSQL, S3-compatible", "Хранение данных и видеороликов")
+    Container(integration, "ERP Integration", "Python", "Сбор и передача метрик в ERP")
+    Container(identity, "Identity Service", "Keycloak", "Аутентификация и авторизация пользователей")
+}
+
+System(edge, "Edge Agent Service", "C++, Python", "Локальное управление устройствами, буферизация событий, работа офлайн")
+
+Rel(operator, notification, "Получает оповещения")
+Rel(admin, identity, "Управляет доступом")
+Rel(edge, event, "Передаёт события")
+Rel(video, event, "Передаёт события")
+Rel(event, notification, "Генерирует тревоги")
+Rel(event, storage, "Сохраняет события и логи")
+Rel(storage, integration, "Передаёт метрики")
+Rel(notification, operator, "Отправляет уведомления")
+Rel(identity, all, "Проверяет права доступа")
+
+@enduml

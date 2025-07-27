@@ -1,0 +1,17 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(operator, "Оператор фермы", "Следит за состоянием животных и техники")
+
+System_Boundary(central, "Монолитный сервер (упрощённый)") {
+    Container(monolith, "AgroMonolith", "Python, Flask", "Обработка видео, событий, оповещений, интеграция, хранение — всё в одном")
+    Container(identity, "Identity Service", "Встроенный", "Аутентификация и авторизация пользователей")
+}
+
+System(edge, "Edge Agent Service", "C++, Python", "Локальное управление устройствами, буферизация событий, работа офлайн")
+
+Rel(operator, monolith, "Получает оповещения и работает через UI")
+Rel(edge, monolith, "Передаёт данные и события")
+Rel(identity, monolith, "Проверяет права доступа")
+
+@enduml
